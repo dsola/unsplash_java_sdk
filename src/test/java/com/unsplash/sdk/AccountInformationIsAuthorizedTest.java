@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AccountInformationIsAuthorizedTest {
 
-    private final UnSplashApiV1Client $client = new UnSplashApiV1Client();
+    private final UnSplashApiV1Client client = new UnSplashApiV1Client();
 
     @Test
     void the_client_is_loaded() {
-        assertTrue(Objects.nonNull($client));
+        assertTrue(Objects.nonNull(client));
     }
 }
