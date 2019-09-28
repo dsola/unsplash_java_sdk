@@ -1,5 +1,6 @@
-package com.unsplash.sdk;
+package com.unsplash.sdk.api;
 
+import com.unsplash.sdk.api.UnSplashApiV1Client;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
