@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TheUserCredentialsAreCorrectlyFormatted {
+
     @Test
     public void the_uri_format_is_correct() {
         UserV1Credentials userCredentials = UserCredentialsStub.makeForV1();
@@ -21,7 +22,7 @@ class TheUserCredentialsAreCorrectlyFormatted {
     public void the_json_format_is_correct() throws WrongJsonUserCredentials {
         UserV1Credentials userCredentials = UserCredentialsStub.makeForV1();
 
-        String json = userCredentials.toJson();
+        String json = userCredentials.toJson().toJSONString();
 
         assertTrue(json.contains("\"client_id\":\"" + userCredentials.getClientId() + "\""));
         assertTrue(json.contains("\"client_secret\":\"" + userCredentials.getClientSecret() + "\""));

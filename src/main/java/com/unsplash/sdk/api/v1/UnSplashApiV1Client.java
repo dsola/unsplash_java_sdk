@@ -2,8 +2,16 @@ package com.unsplash.sdk.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unsplash.sdk.api.UnSplashApiClient;
+import com.unsplash.sdk.api.v1.resources.TokenV1Credentials;
 import com.unsplash.sdk.api.v1.resources.UserProfile;
+import com.unsplash.sdk.entities.TokenCredentials;
+import com.unsplash.sdk.errors.InvalidResponseFormat;
+import com.unsplash.sdk.errors.UnSplashApiError;
+import com.unsplash.sdk.exceptions.InvalidJsonFormat;
 import com.unsplash.sdk.exceptions.WrongJsonUserCredentials;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
@@ -36,15 +44,38 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
                 "&scope=" + String.join("+", scopes);
     }
 
-    public String generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials {
-        String jsonCredentials = userCredentials.toJson();
+    @Override
+    public TokenCredentials generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials, UnSplashApiError {
+        JSONObject jsonCredentials = generateJsonCredentials(authorizationCode);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .header("Accept-Version", "1.0")
                 .uri(URI.create(OAUTH_URL + "/token"))
-                .POST(HttpRequest.BodyPublishers.ofString(jsonCredentials))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonCredentials.toJSONString()))
                 .build();
-        return "access_token";
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException|InterruptedException e) {
+            System.out.println("Error when trying to get the access token using the code: " + authorizationCode);
+            throw new UnSplashApiError(e.getMessage());
+        }
+        this.validateResponse(response);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Reader reader = new StringReader(response.body());
+            return objectMapper.readValue(reader, TokenV1Credentials.class);
+        } catch (IOException e) {
+            throw new InvalidResponseFormat("The system can't find the access token in the response");
+        }
+    }
+
+    private JSONObject generateJsonCredentials(String authorizationCode) throws WrongJsonUserCredentials {
+        JSONObject jsonCredentials = userCredentials.toJson();
+        jsonCredentials.put("grant_type", "authorization_code");
+        jsonCredentials.put("code", authorizationCode);
+        return jsonCredentials;
     }
 
     public UserProfile getUserProfile() {
@@ -85,5 +116,25 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         }
 
         return userProfile;
+    }
+
+    private void validateResponse(HttpResponse<String> response) throws UnSplashApiError, InvalidJsonFormat
+    {
+        if (response.statusCode() >= 200 && response.statusCode() <= 301) {
+            return;
+        }
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject jsonResponse = (JSONObject) parser.parse(response.body());
+            if (jsonResponse.containsKey("error")) {
+                String errorMessage = "Error response from server -> " +
+                        response.statusCode() +
+                        "[" + jsonResponse.get("error") + "] " +
+                        jsonResponse.get("error_description");
+                throw new UnSplashApiError(errorMessage);
+            }
+        } catch (ParseException e) {
+            throw new InvalidJsonFormat("The response from the server has a bad format -> " + response.body());
+        }
     }
 }

@@ -6,6 +6,9 @@ import com.unsplash.sdk.api.UriFormat;
 import com.unsplash.sdk.entities.UserCredentials;
 import com.unsplash.sdk.exceptions.WrongJsonUserCredentials;
 import lombok.Setter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 
@@ -45,11 +48,13 @@ final public class UserV1Credentials implements UserCredentials {
         return mapper.convertValue(this, UriFormat.class);
     }
 
-    public String toJson() throws WrongJsonUserCredentials {
+    public JSONObject toJson() throws WrongJsonUserCredentials {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(this);
-        } catch (IOException e) {
+            String jsonString = mapper.writeValueAsString(this);
+            JSONParser parser = new JSONParser();
+            return (JSONObject) parser.parse(jsonString);
+        } catch (IOException | ParseException e) {
             System.out.println(
                     "Something wrong happened when trying to parse the user credentials -> " + this.toString()
             );
