@@ -1,7 +1,7 @@
 package com.unsplash.sdk.api.v1;
 
 import com.unsplash.sdk.api.SupportedApiVersions;
-import com.unsplash.sdk.api.UnSplashApiFactory;
+import com.unsplash.sdk.api.UnSplashApiClientFactory;
 import com.unsplash.sdk.api.stubs.UserCredentialsStub;
 import com.unsplash.sdk.entities.TokenCredentials;
 import com.unsplash.sdk.errors.UnSplashApiError;
@@ -19,9 +19,8 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
     @Test
     final void the_authorization_url_contains_all_the_parameters() {
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
-        UnSplashApiV1Client client = (
-                UnSplashApiV1Client) UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, userV1Credentials
-        );
+        UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
+        UnSplashApiV1Client client = (UnSplashApiV1Client) factory.build(SupportedApiVersions.VERSION_1, userV1Credentials);
 
         String authorizationUrl = client.getAuthorizationUrl(new ArrayList<>());
 
@@ -38,9 +37,8 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
         scopes.add("read_user");
         scopes.add("public");
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
-        UnSplashApiV1Client client = (
-                UnSplashApiV1Client) UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, userV1Credentials
-        );
+        UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
+        UnSplashApiV1Client client = (UnSplashApiV1Client) factory.build(SupportedApiVersions.VERSION_1, userV1Credentials);
 
         String authorizationUrl = client.getAuthorizationUrl(scopes);
 
