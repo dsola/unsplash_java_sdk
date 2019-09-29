@@ -1,22 +1,23 @@
 package com.unsplash.sdk.api.v1;
 
 import com.unsplash.sdk.api.stubs.UserCredentialsStub;
-import com.unsplash.sdk.api.v1.resources.profile.UserProfileV1;
+import com.unsplash.sdk.entities.Collection;
+import com.unsplash.sdk.entities.UserProfile;
 import com.unsplash.sdk.errors.UnSplashApiError;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-final class TheUserCanSeeInformationFromHisProfile extends ApiClientTest {
+final class TheUserIsAbleToRequestCollections extends ApiClientTest {
     @Test
-    final void the_basic_profile_information_is_provided() throws IOException, InterruptedException {
-        String jsonResponse = loadServerMockResponse("with_valid_user_profile.json");
+    final void for_an_empty_list_of_collections() throws IOException, InterruptedException {
+        String jsonResponse = loadServerMockResponse("empty_collection.json");
         String accessToken = "AT-1234";
         Mockito.when(responseFromServer.body()).thenReturn(jsonResponse);
         Mockito.when(responseFromServer.statusCode()).thenReturn(200);
@@ -24,20 +25,14 @@ final class TheUserCanSeeInformationFromHisProfile extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        UserProfileV1 userProfile = client.getUserProfile(accessToken);
+        List<Collection> collections = client.getCollections(accessToken);
 
-        assertEquals("g8Gvi_mO9r8", userProfile.getId());
-        assertEquals("solaing", userProfile.getUsername());
-        assertEquals("David", userProfile.getFirstName());
-        assertEquals("Sola", userProfile.getLastName());
-        assertEquals("2019-09-28T06:21:33", userProfile.getUpdatedTime().format(DateTimeFormatter.ISO_DATE_TIME));
-        assertFalse(userProfile.getBio().isPresent());
-        assertFalse(userProfile.getLocation().isPresent());
+        assertTrue(collections.isEmpty());
     }
 
     @Test
-    final void the_user_metrics_are_included_in_the_profile() throws IOException, InterruptedException {
-        String jsonResponse = loadServerMockResponse("with_valid_user_profile.json");
+    final void with_one_collection() throws IOException, InterruptedException {
+        String jsonResponse = loadServerMockResponse("with_one_collection.json");
         String accessToken = "AT-1234";
         Mockito.when(responseFromServer.body()).thenReturn(jsonResponse);
         Mockito.when(responseFromServer.statusCode()).thenReturn(200);
@@ -45,16 +40,27 @@ final class TheUserCanSeeInformationFromHisProfile extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        UserProfileV1 userProfile = client.getUserProfile(accessToken);
+        List<Collection> collections = client.getCollections(accessToken);
 
-        assertEquals(1, userProfile.getTotalCollections().get());
-        assertEquals(0, userProfile.getTotalLikes().get());
-        assertEquals(3, userProfile.getTotalPhotos().get());
+        Collection collection = collections.get(0);
+
+        assertEquals(1248080, collection.getId());
+        assertEquals("October Afternoon", collection.getTitle());
+        assertEquals(
+        "Autumn leaves and pumpkins, wild mushrooms in the woods, the colors of the fall. When I think of October, this is what I see.",
+            collection.getDescription()
+        );
+        assertEquals(false, collection.isCurated());
+        assertEquals(true, collection.isFeatured());
+        assertEquals(false, collection.isPrivate());
+        assertEquals(119, collection.getTotalPhotos());
+        assertEquals("2019-09-27T11:16:01", collection.getPublishedDate().format(DateTimeFormatter.ISO_DATE_TIME));
+        assertEquals("2019-09-27T11:16:01", collection.getUpdatedDate().format(DateTimeFormatter.ISO_DATE_TIME));
     }
 
     @Test
-    final void the_bio_and_the_location_are_provided() throws IOException, InterruptedException {
-        String jsonResponse = loadServerMockResponse("with_user_profile_bio_and_location.json");
+    final void the_collection_includes_information_about_the_user() throws IOException, InterruptedException {
+        String jsonResponse = loadServerMockResponse("with_one_collection.json");
         String accessToken = "AT-1234";
         Mockito.when(responseFromServer.body()).thenReturn(jsonResponse);
         Mockito.when(responseFromServer.statusCode()).thenReturn(200);
@@ -62,15 +68,17 @@ final class TheUserCanSeeInformationFromHisProfile extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        UserProfileV1 userProfile = client.getUserProfile(accessToken);
+        List<Collection> collections = client.getCollections(accessToken);
 
-        assertEquals("An amazing Software Engineer :)", userProfile.getBio().get());
-        assertEquals("Van Nijenrodeweg 214, Amsterdam", userProfile.getLocation().get());
+        Collection collection = collections.get(0);
+
+        UserProfile userProfile = collection.getUser();
+        assertEquals("viazavier", userProfile.getUsername());
     }
 
     @Test
-    final void the_profile_picture_is_included_in_the_profile() throws IOException, InterruptedException {
-        String jsonResponse = loadServerMockResponse("with_valid_user_profile.json");
+    final void when_there_are_a_lot_of_collections() throws IOException, InterruptedException {
+        String jsonResponse = loadServerMockResponse("with_a_lot_of_collections.json");
         String accessToken = "AT-1234";
         Mockito.when(responseFromServer.body()).thenReturn(jsonResponse);
         Mockito.when(responseFromServer.statusCode()).thenReturn(200);
@@ -78,20 +86,9 @@ final class TheUserCanSeeInformationFromHisProfile extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        UserProfileV1 userProfile = client.getUserProfile(accessToken);
+        List<Collection> collections = client.getCollections(accessToken);
 
-        assertEquals(
-            new URL("https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32"),
-            userProfile.getSmallProfilePicture().get()
-        );
-        assertEquals(
-            new URL("https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64"),
-            userProfile.getMediumProfilePicture().get()
-        );
-        assertEquals(
-            new URL("https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128"),
-            userProfile.getLargeProfilePicture().get()
-        );
+        assertEquals(10, collections.size());
     }
 
     @Test
@@ -105,7 +102,7 @@ final class TheUserCanSeeInformationFromHisProfile extends ApiClientTest {
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
         assertThrows(UnSplashApiError.class,  () -> {
-            client.getUserProfile(accessToken);
+            client.getCollections(accessToken);
         });
     }
 }

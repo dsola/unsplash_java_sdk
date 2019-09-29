@@ -1,9 +1,12 @@
 package com.unsplash.sdk.api.v1;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unsplash.sdk.api.UnSplashApiClient;
+import com.unsplash.sdk.api.v1.resources.CollectionV1;
 import com.unsplash.sdk.api.v1.resources.TokenV1Credentials;
 import com.unsplash.sdk.api.v1.resources.profile.UserProfileV1;
+import com.unsplash.sdk.entities.Collection;
 import com.unsplash.sdk.entities.TokenCredentials;
 import com.unsplash.sdk.errors.InvalidResponseFormat;
 import com.unsplash.sdk.errors.UnSplashApiError;
@@ -22,6 +25,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 final public class UnSplashApiV1Client implements UnSplashApiClient {
 
@@ -87,6 +91,21 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         return extractUserProfileFromResponse(response);
     }
 
+    @Override
+    public List<Collection> getCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+        HttpResponse<String> response;
+        try {
+            HttpRequest request = buildHttpGetRequest("collections", accessToken);
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException|InterruptedException e) {
+            System.out.println("Error when trying to get the collections with accessToken [" + accessToken + "]");
+            e.printStackTrace();
+            throw new UnSplashApiError(e.getMessage());
+        }
+        validateResponse(response);
+        return extractCollectionsFromResponse(response);
+    }
+
     private HttpRequest buildHttpGetRequest(String endpoint, String accessToken) {
         return HttpRequest.newBuilder()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -108,6 +127,17 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         }
     }
 
+    private List<Collection> extractCollectionsFromResponse(HttpResponse<String> response) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Reader reader = new StringReader(response.body());
+            return objectMapper.readValue(reader, new TypeReference<List<CollectionV1>>(){});
+        } catch (NullPointerException| IOException e) {
+            e.printStackTrace();
+            throw new InvalidResponseFormat("The system can't find valid information from the response");
+        }
+    }
+
     private void validateResponse(HttpResponse<String> response) throws UnSplashApiError, InvalidJsonFormat
     {
         if (response.statusCode() >= 200 && response.statusCode() <= 301) {
@@ -116,13 +146,19 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         JSONParser parser = new JSONParser();
         try {
             JSONObject jsonResponse = (JSONObject) parser.parse(response.body());
+            String errorMessage = "Error response from server -> " + response.statusCode();
             if (jsonResponse.containsKey("error")) {
-                String errorMessage = "Error response from server -> " +
-                        response.statusCode() +
-                        "[" + jsonResponse.get("error") + "] " +
-                        jsonResponse.get("error_description");
+                errorMessage += "[" + jsonResponse.get("error") + "] " + jsonResponse.get("error_description");
                 throw new UnSplashApiError(errorMessage);
             }
+            if (jsonResponse.containsKey("errors")) {
+                List<String> errorMessageList = (List<String>) jsonResponse.get("errors");
+                String errorMessages = errorMessageList.stream().map(Object::toString).collect(Collectors.joining(","));;
+                errorMessage += errorMessages;
+
+            }
+            throw new UnSplashApiError(errorMessage);
+
         } catch (ParseException e) {
             throw new InvalidJsonFormat("The response from the server has a bad format -> " + response.body());
         }
