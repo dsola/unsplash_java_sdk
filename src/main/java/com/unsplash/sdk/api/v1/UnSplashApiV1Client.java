@@ -28,9 +28,12 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         this.userCredentials = userCredentials;
     }
 
+    @Override
     public String getAuthorizationUrl(List<String> scopes) {
-        String uriScopes = scopes.toString();
-        return OAUTH_URL + "/authorize?" + userCredentials.toUriFormat().toString() + uriScopes;
+        return OAUTH_URL + "/authorize?" +
+                userCredentials.toUriFormat().toString() +
+                "&response_type=code" +
+                "&scope=" + String.join("+", scopes);
     }
 
     public String generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials {

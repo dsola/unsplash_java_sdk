@@ -6,6 +6,6 @@ import com.unsplash.sdk.api.v1.UserV1Credentials;
 public class UserCredentialsStub {
     public static UserV1Credentials makeForV1() {
         Faker faker = new Faker();
-        return new UserV1Credentials(faker.code().toString(), faker.code().toString(), faker.internet().url());
+        return new UserV1Credentials(faker.code().asin(), faker.code().asin(), faker.internet().url());
     }
 }

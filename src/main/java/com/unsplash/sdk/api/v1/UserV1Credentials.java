@@ -27,12 +27,15 @@ final public class UserV1Credentials implements UserCredentials {
         this.redirectUri = redirectUri;
     }
 
+    @Override
     public String getClientId() { return clientId; }
 
+    @Override
     public String getClientSecret() {
         return clientSecret;
     }
 
+    @Override
     public String getRedirectUri() {
         return redirectUri;
     }

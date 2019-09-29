@@ -9,7 +9,7 @@ import java.net.http.HttpClient;
 
 public class UnSplashApiFactory {
     public static UnSplashApiClient build(String version, UserCredentials userCredentials) throws UnsupportedApiVersion {
-        if (version.equals(ApiVersions.VERSION_1)) {
+        if (version.equals(SupportedApiVersions.VERSION_1)) {
             HttpClient client = HttpClient.newHttpClient();
             return new UnSplashApiV1Client(client, (UserV1Credentials) userCredentials);
         }

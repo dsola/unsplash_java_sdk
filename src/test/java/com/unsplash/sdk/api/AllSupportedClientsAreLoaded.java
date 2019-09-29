@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AllSupportedClientsAreLoaded {
     @Test
     void api_client_for_v1_is_loaded() {
-        UnSplashApiClient client = UnSplashApiFactory.build(ApiVersions.VERSION_1, UserCredentialsStub.makeForV1());
+        UnSplashApiClient client = UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, UserCredentialsStub.makeForV1());
         assertNotNull(client);
     }
 
