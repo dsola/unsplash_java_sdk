@@ -8,7 +8,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(using = PhotoDeserializer.class)
-public class PhotoV1 implements com.unsplash.sdk.entities.Photo {
+final public class PhotoV1 implements com.unsplash.sdk.entities.Photo {
     private String id;
     private LocalDateTime publishedDate;
     private LocalDateTime updatedDate;

@@ -46,6 +46,18 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
     }
 
     @Test
+    final void the_authorization_url_does_not_contain_scopes_when_are_not_specified() {
+        ArrayList<String> scopes = new ArrayList<>();
+        UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
+        UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
+        UnSplashApiV1Client client = (UnSplashApiV1Client) factory.build(SupportedApiVersions.VERSION_1, userV1Credentials);
+
+        String authorizationUrl = client.getAuthorizationUrl(scopes);
+
+        assertFalse(authorizationUrl.contains("scope"));
+    }
+
+    @Test
     final void the_access_token_and_refresh_token_are_provided_when_the_user_sends_the_correct_information() throws IOException, InterruptedException {
         String jsonResponse = loadServerMockResponse("with_access_token.json");
         String authorizationCode = "123433434";

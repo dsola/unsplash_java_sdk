@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonDeserialize(using = UserProfileDeserializer.class)
-public class UserProfileV1 implements com.unsplash.sdk.entities.UserProfile {
+final public class UserProfileV1 implements com.unsplash.sdk.entities.UserProfile {
     private String id;
     private String username;
     private String firstName;

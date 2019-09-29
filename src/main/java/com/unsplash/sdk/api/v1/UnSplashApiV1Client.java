@@ -44,10 +44,11 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
 
     @Override
     public String getAuthorizationUrl(List<String> scopes) {
-        return OAUTH_URL + "/authorize?" +
-                userCredentials.toUriFormat().toString() +
-                "&response_type=code" +
-                "&scope=" + String.join("+", scopes);
+        String authorizeUrl = OAUTH_URL + "/authorize?" + userCredentials.toUriFormat().toString() + "&response_type=code";
+        if (!scopes.isEmpty()) {
+            authorizeUrl += "&scope=" + String.join("+", scopes);
+        }
+        return authorizeUrl;
     }
 
     @Override

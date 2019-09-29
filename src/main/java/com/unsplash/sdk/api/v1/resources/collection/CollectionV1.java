@@ -1,13 +1,13 @@
 package com.unsplash.sdk.api.v1.resources.collection;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.unsplash.sdk.api.v1.resources.collection.CollectionDeserializer;
+import com.unsplash.sdk.entities.Collection;
 import com.unsplash.sdk.entities.UserProfile;
 
 import java.time.LocalDateTime;
 
 @JsonDeserialize(using = CollectionDeserializer.class)
-public class CollectionV1 implements com.unsplash.sdk.entities.Collection {
+final public class CollectionV1 implements Collection {
     private Integer id;
     private String title;
     private String description;

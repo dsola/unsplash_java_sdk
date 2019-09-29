@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-class TheUserIsAbleToRequestPhotos extends ApiClientTest {
+final class TheUserIsAbleToRequestPhotos extends ApiClientTest {
     @Test
     final void for_an_empty_list_of_photos() throws IOException, InterruptedException {
         String jsonResponse = loadServerMockResponse("empty_collection.json");
