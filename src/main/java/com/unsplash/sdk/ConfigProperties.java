@@ -6,7 +6,7 @@ public class ConfigProperties {
 
     private ResourceBundle rb;
 
-    ConfigProperties(ResourceBundle rb) {
+    private ConfigProperties(ResourceBundle rb) {
         this.rb = rb;
     }
 
@@ -21,8 +21,20 @@ public class ConfigProperties {
         return new ConfigProperties(rb);
     }
 
-    public String getAccessKey() {
-        return rb.getString("unsplash.api.access_key");
+    public String getClientId() {
+        return rb.getString("unsplash.api.client_id");
+    }
+
+    public String getClientSecret() {
+        return rb.getString("unsplash.api.client_secret");
+    }
+
+    public String getAuthorizationCode() {
+        return rb.getString("unsplash.api.authorization_code");
+    }
+
+    public String getRedirectUri() {
+        return rb.getString("unsplash.api.redirect_uri");
     }
 
     public String getApiVersion() {
