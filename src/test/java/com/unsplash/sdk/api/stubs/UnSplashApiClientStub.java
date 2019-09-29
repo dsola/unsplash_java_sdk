@@ -11,6 +11,7 @@ import com.unsplash.sdk.errors.UnSplashApiError;
 import com.unsplash.sdk.exceptions.InvalidJsonFormat;
 import com.unsplash.sdk.exceptions.WrongJsonUserCredentials;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UnSplashApiClientStub implements UnSplashApiClient {
@@ -18,12 +19,15 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
     private final String authorizationUrl;
     private final TokenCredentials tokenCredentials;
     private final UserProfile userProfile;
+    private final List<Photo> photos;
 
     public UnSplashApiClientStub() {
         Faker faker = new Faker();
         authorizationUrl = faker.internet().url();
         tokenCredentials = new TokenCredentialsStub();
         userProfile = new UserProfileStub();
+        photos = new ArrayList<>();
+        photos.add(new PhotoStub());
     }
 
     @Override
@@ -42,13 +46,13 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
     }
 
     @Override
-    public List<Collection> getCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+    public List<Collection> requestForCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
         return null;
     }
 
     @Override
-    public List<Photo> getPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
-        return null;
+    public List<Photo> requestForPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+        return photos;
     }
 
     public String getAuthorizationUrl() {
@@ -61,5 +65,9 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
 
     public UserProfile getUserProfile() {
         return userProfile;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
     }
 }

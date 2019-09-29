@@ -95,7 +95,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
     }
 
     @Override
-    public List<Collection> getCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+    public List<Collection> requestForCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
         HttpResponse<String> response;
         try {
             HttpRequest request = buildHttpGetRequest("collections", accessToken);
@@ -110,7 +110,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
     }
 
     @Override
-    public List<Photo> getPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+    public List<Photo> requestForPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
         HttpResponse<String> response;
         try {
             HttpRequest request = buildHttpGetRequest("photos", accessToken);

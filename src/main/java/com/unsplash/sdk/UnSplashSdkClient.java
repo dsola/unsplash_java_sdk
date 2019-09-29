@@ -45,13 +45,13 @@ public class UnSplashSdkClient implements UnSplashClient {
     @Override
     public List<Collection> getCollections() throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
         validateTokenCredentials();
-        return apiClient.getCollections(tokenCredentials.getAccessToken());
+        return apiClient.requestForCollections(tokenCredentials.getAccessToken());
     }
 
     @Override
     public List<Photo> getPhotos() throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
         validateTokenCredentials();
-        return apiClient.getPhotos(tokenCredentials.getAccessToken());
+        return apiClient.requestForPhotos(tokenCredentials.getAccessToken());
     }
 
     private void validateTokenCredentials() {

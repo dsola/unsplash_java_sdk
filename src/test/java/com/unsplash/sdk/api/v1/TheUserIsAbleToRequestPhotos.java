@@ -27,7 +27,7 @@ final class TheUserIsAbleToRequestPhotos extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Photo> photos = client.getPhotos(accessToken);
+        List<Photo> photos = client.requestForPhotos(accessToken);
 
         assertTrue(photos.isEmpty());
     }
@@ -42,7 +42,7 @@ final class TheUserIsAbleToRequestPhotos extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Photo> photos = client.getPhotos(accessToken);
+        List<Photo> photos = client.requestForPhotos(accessToken);
 
         Photo photo = photos.get(0);
 
@@ -86,7 +86,7 @@ final class TheUserIsAbleToRequestPhotos extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Photo> photos = client.getPhotos(accessToken);
+        List<Photo> photos = client.requestForPhotos(accessToken);
 
         Photo photo = photos.get(0);
 
@@ -104,7 +104,7 @@ final class TheUserIsAbleToRequestPhotos extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Photo> photos = client.getPhotos(accessToken);
+        List<Photo> photos = client.requestForPhotos(accessToken);
 
         assertEquals(10, photos.size());
     }
@@ -119,6 +119,6 @@ final class TheUserIsAbleToRequestPhotos extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        assertThrows(UnSplashApiError.class,  () -> client.getPhotos(accessToken));
+        assertThrows(UnSplashApiError.class,  () -> client.requestForPhotos(accessToken));
     }
 }

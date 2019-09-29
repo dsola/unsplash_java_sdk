@@ -19,7 +19,7 @@ public interface UnSplashApiClient {
 
     UserProfile getUserProfile(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
 
-    List<Collection> getCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
+    List<Collection> requestForCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
 
-    List<Photo> getPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
+    List<Photo> requestForPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
 }

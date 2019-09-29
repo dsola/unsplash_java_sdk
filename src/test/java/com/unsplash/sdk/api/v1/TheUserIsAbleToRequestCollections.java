@@ -26,7 +26,7 @@ final class TheUserIsAbleToRequestCollections extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Collection> collections = client.getCollections(accessToken);
+        List<Collection> collections = client.requestForCollections(accessToken);
 
         assertTrue(collections.isEmpty());
     }
@@ -41,7 +41,7 @@ final class TheUserIsAbleToRequestCollections extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Collection> collections = client.getCollections(accessToken);
+        List<Collection> collections = client.requestForCollections(accessToken);
 
         Collection collection = collections.get(0);
 
@@ -69,7 +69,7 @@ final class TheUserIsAbleToRequestCollections extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Collection> collections = client.getCollections(accessToken);
+        List<Collection> collections = client.requestForCollections(accessToken);
 
         Collection collection = collections.get(0);
 
@@ -87,7 +87,7 @@ final class TheUserIsAbleToRequestCollections extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        List<Collection> collections = client.getCollections(accessToken);
+        List<Collection> collections = client.requestForCollections(accessToken);
 
         assertEquals(10, collections.size());
     }
@@ -102,6 +102,6 @@ final class TheUserIsAbleToRequestCollections extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        assertThrows(UnSplashApiError.class,  () -> client.getCollections(accessToken));
+        assertThrows(UnSplashApiError.class,  () -> client.requestForCollections(accessToken));
     }
 }
