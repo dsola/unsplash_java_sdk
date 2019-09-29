@@ -1,4 +1,4 @@
-package com.unsplash.sdk.api.v1.resources;
+package com.unsplash.sdk.api.v1.resources.profile;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class UserProfileDeserializer extends StdDeserializer<UserProfile> {
+public class UserProfileDeserializer extends StdDeserializer<UserProfileV1> {
 
     public UserProfileDeserializer() {
         this(null);
@@ -20,9 +20,9 @@ public class UserProfileDeserializer extends StdDeserializer<UserProfile> {
     }
 
     @Override
-    public UserProfile deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public UserProfileV1 deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode productNode = jp.getCodec().readTree(jp);
-        UserProfile userProfile = new UserProfile(
+        UserProfileV1 userProfile = new UserProfileV1(
             extractTextValueFromNode(productNode, "id"),
             extractTextValueFromNode(productNode, "username"),
             extractTextValueFromNode(productNode, "first_name"),
@@ -42,6 +42,12 @@ public class UserProfileDeserializer extends StdDeserializer<UserProfile> {
             extractIntegerValueFromNode(productNode, "total_collections")
         );
         userProfile.setMetrics(metrics);
+        UserProfilePicture profilePicture = new UserProfilePicture(
+            extractTextValueFromNode(productNode.get("profile_image"), "small"),
+            extractTextValueFromNode(productNode.get("profile_image"), "medium"),
+            extractTextValueFromNode(productNode.get("profile_image"), "large")
+        );
+        userProfile.setProfilePicture(profilePicture);
 
         return userProfile;
     }

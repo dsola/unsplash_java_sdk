@@ -3,7 +3,7 @@ package com.unsplash.sdk.api.v1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unsplash.sdk.api.UnSplashApiClient;
 import com.unsplash.sdk.api.v1.resources.TokenV1Credentials;
-import com.unsplash.sdk.api.v1.resources.UserProfile;
+import com.unsplash.sdk.api.v1.resources.profile.UserProfileV1;
 import com.unsplash.sdk.entities.TokenCredentials;
 import com.unsplash.sdk.errors.InvalidResponseFormat;
 import com.unsplash.sdk.errors.UnSplashApiError;
@@ -73,7 +73,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
     }
 
     @Override
-    public UserProfile getUserProfile(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+    public UserProfileV1 getUserProfile(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
         HttpResponse<String> response;
         try {
             HttpRequest request = buildHttpGetRequest("me", accessToken);
@@ -97,11 +97,11 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
                 .build();
     }
 
-    private UserProfile extractUserProfileFromResponse(HttpResponse<String> response) {
+    private UserProfileV1 extractUserProfileFromResponse(HttpResponse<String> response) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Reader reader = new StringReader(response.body());
-            return objectMapper.readValue(reader, UserProfile.class);
+            return objectMapper.readValue(reader, UserProfileV1.class);
         } catch (NullPointerException| IOException e) {
             e.printStackTrace();
             throw new InvalidResponseFormat("The system can't find valid information from the response");
