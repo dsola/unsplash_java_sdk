@@ -22,7 +22,7 @@ class TheUserCredentialsAreCorrectlyFormatted {
     public void the_json_format_is_correct() throws WrongJsonUserCredentials {
         UserV1Credentials userCredentials = UserCredentialsStub.makeForV1();
 
-        String json = userCredentials.toJson().toJSONString();
+        String json = userCredentials.toRequestAccessToken("2435678").toJSONString();
 
         assertTrue(json.contains("\"client_id\":\"" + userCredentials.getClientId() + "\""));
         assertTrue(json.contains("\"client_secret\":\"" + userCredentials.getClientSecret() + "\""));

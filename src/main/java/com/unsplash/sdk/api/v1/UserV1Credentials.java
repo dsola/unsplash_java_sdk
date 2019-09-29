@@ -48,12 +48,15 @@ final public class UserV1Credentials implements UserCredentials {
         return mapper.convertValue(this, UriFormat.class);
     }
 
-    public JSONObject toJson() throws WrongJsonUserCredentials {
+    public JSONObject toRequestAccessToken(String authorizationCode) throws WrongJsonUserCredentials {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String jsonString = mapper.writeValueAsString(this);
             JSONParser parser = new JSONParser();
-            return (JSONObject) parser.parse(jsonString);
+            JSONObject jsonCredentials = (JSONObject) parser.parse(jsonString);
+            jsonCredentials.put("code", authorizationCode);
+            jsonCredentials.put("grant_type", "authorization_code");
+            return jsonCredentials;
         } catch (IOException | ParseException e) {
             System.out.println(
                     "Something wrong happened when trying to parse the user credentials -> " + this.toString()

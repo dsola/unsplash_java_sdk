@@ -46,7 +46,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
 
     @Override
     public TokenCredentials generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials, UnSplashApiError {
-        JSONObject jsonCredentials = generateJsonCredentials(authorizationCode);
+        JSONObject jsonCredentials = userCredentials.toRequestAccessToken(authorizationCode);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -69,13 +69,6 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         } catch (IOException e) {
             throw new InvalidResponseFormat("The system can't find the access token in the response");
         }
-    }
-
-    private JSONObject generateJsonCredentials(String authorizationCode) throws WrongJsonUserCredentials {
-        JSONObject jsonCredentials = userCredentials.toJson();
-        jsonCredentials.put("grant_type", "authorization_code");
-        jsonCredentials.put("code", authorizationCode);
-        return jsonCredentials;
     }
 
     public UserProfile getUserProfile() {

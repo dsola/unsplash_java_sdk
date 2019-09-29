@@ -5,8 +5,11 @@ import com.unsplash.sdk.api.UnSplashApiFactory;
 import com.unsplash.sdk.api.stubs.UserCredentialsStub;
 import com.unsplash.sdk.entities.TokenCredentials;
 import com.unsplash.sdk.errors.UnSplashApiError;
+import org.json.simple.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -15,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
@@ -39,7 +43,7 @@ class TheUserCanBeAuthorizedWithClient {
     final void the_authorization_url_contains_all_the_parameters() {
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = (
-            UnSplashApiV1Client)UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, userV1Credentials
+                UnSplashApiV1Client) UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, userV1Credentials
         );
 
         String authorizationUrl = client.getAuthorizationUrl(new ArrayList<>());
@@ -58,7 +62,7 @@ class TheUserCanBeAuthorizedWithClient {
         scopes.add("public");
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = (
-                UnSplashApiV1Client)UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, userV1Credentials
+                UnSplashApiV1Client) UnSplashApiFactory.build(SupportedApiVersions.VERSION_1, userV1Credentials
         );
 
         String authorizationUrl = client.getAuthorizationUrl(scopes);
@@ -97,7 +101,23 @@ class TheUserCanBeAuthorizedWithClient {
             client.generateAccessToken(authorizationCode);
         });
 
+        assertTrue(error.getMessage().contains("401"));
+        assertTrue(error.getMessage().contains("invalid_grant"));
         assertTrue(error.getMessage().contains("The provided authorization grant is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."));
+    }
+
+    @Test
+    final void the_grant_type_and_the_authorization_code_are_informed_at_the_response() throws IOException, InterruptedException {
+        UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
+        String authorizationCode = "234567890";
+
+        JSONObject jsonCredentials = userV1Credentials.toRequestAccessToken(authorizationCode);
+
+        assertTrue(jsonCredentials.containsKey("code"));
+        assertTrue(jsonCredentials.containsValue("234567890"));
+        assertTrue(jsonCredentials.containsKey("grant_type"));
+        assertTrue(jsonCredentials.containsValue("authorization_code"));
+
     }
 
     private String loadServerMockResponse(String relativePath) throws IOException {
