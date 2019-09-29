@@ -20,6 +20,7 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
     private final TokenCredentials tokenCredentials;
     private final UserProfile userProfile;
     private final List<Photo> photos;
+    private final List<Collection> collections;
 
     public UnSplashApiClientStub() {
         Faker faker = new Faker();
@@ -28,6 +29,8 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
         userProfile = new UserProfileStub();
         photos = new ArrayList<>();
         photos.add(new PhotoStub());
+        collections = new ArrayList<>();
+        collections.add(new CollectionStub());
     }
 
     @Override
@@ -47,7 +50,7 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
 
     @Override
     public List<Collection> requestForCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
-        return null;
+        return collections;
     }
 
     @Override
@@ -69,5 +72,9 @@ public class UnSplashApiClientStub implements UnSplashApiClient {
 
     public List<Photo> getPhotos() {
         return photos;
+    }
+
+    public List<Collection> getCollections() {
+        return collections;
     }
 }

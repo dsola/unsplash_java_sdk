@@ -19,7 +19,7 @@ final class UserCanAskForTheProfileUsingTheSdk extends SdkClientTest {
     }
 
     @Test
-    final void the_sdk_returns_the_correct_access_token_to_the_user() throws WrongJsonUserCredentials {
+    final void the_sdk_returns_the_correct_profile_to_the_user() throws WrongJsonUserCredentials {
         UnSplashApiClientStub apiClient = new UnSplashApiClientStub();
         UnSplashSdkClient client = buildSdkClientWithApiClientStub(apiClient);
 
