@@ -22,7 +22,7 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
         UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
         UnSplashApiV1Client client = (UnSplashApiV1Client) factory.build(SupportedApiVersions.VERSION_1, userV1Credentials);
 
-        String authorizationUrl = client.getAuthorizationUrl(new ArrayList<>());
+        String authorizationUrl = client.generateAuthorizationUrl(new ArrayList<>());
 
         assertTrue(authorizationUrl.contains("/authorize"));
         assertTrue(authorizationUrl.contains("client_id"));
@@ -40,7 +40,7 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
         UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
         UnSplashApiV1Client client = (UnSplashApiV1Client) factory.build(SupportedApiVersions.VERSION_1, userV1Credentials);
 
-        String authorizationUrl = client.getAuthorizationUrl(scopes);
+        String authorizationUrl = client.generateAuthorizationUrl(scopes);
 
         assertTrue(authorizationUrl.contains("scope=read_user+public"));
     }
@@ -52,7 +52,7 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
         UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
         UnSplashApiV1Client client = (UnSplashApiV1Client) factory.build(SupportedApiVersions.VERSION_1, userV1Credentials);
 
-        String authorizationUrl = client.getAuthorizationUrl(scopes);
+        String authorizationUrl = client.generateAuthorizationUrl(scopes);
 
         assertFalse(authorizationUrl.contains("scope"));
     }

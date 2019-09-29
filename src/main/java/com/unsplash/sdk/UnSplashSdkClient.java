@@ -21,9 +21,13 @@ public class UnSplashSdkClient implements UnSplashClient {
         apiClient = factory.build(version, userCredentials);
     }
 
+    public static UnSplashSdkClient initialize(String version, UserCredentials userCredentials) {
+        return new UnSplashSdkClient(new UnSplashApiClientFactory(), version, userCredentials);
+    }
+
     @Override
     public String generateAuthorizeUrl(List<String> scopes) {
-        return apiClient.getAuthorizationUrl(scopes);
+        return apiClient.generateAuthorizationUrl(scopes);
     }
 
     @Override

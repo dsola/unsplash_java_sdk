@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface UnSplashApiClient {
 
-    String getAuthorizationUrl(List<String> scopes);
+    String generateAuthorizationUrl(List<String> scopes);
 
     TokenCredentials generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials, UnSplashApiError;
 
