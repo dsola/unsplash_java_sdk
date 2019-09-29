@@ -1,0 +1,48 @@
+{
+  "id": "g8Gvi_mO9r8",
+  "updated_at": "2019-09-28T06:21:33-04:00",
+  "username": "solaing",
+  "name": "David Sola",
+  "first_name": "David",
+  "last_name": "Sola",
+  "twitter_username": null,
+  "portfolio_url": null,
+  "bio": null,
+  "location": null,
+  "links": {
+    "self": "https://api.unsplash.com/users/solaing",
+    "html": "https://unsplash.com/@solaing",
+    "photos": "https://api.unsplash.com/users/solaing/photos",
+    "likes": "https://api.unsplash.com/users/solaing/likes",
+    "portfolio": "https://api.unsplash.com/users/solaing/portfolio",
+    "following": "https://api.unsplash.com/users/solaing/following",
+    "followers": "https://api.unsplash.com/users/solaing/followers"
+  },
+  "profile_image": {
+    "small": "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=32&w=32",
+    "medium": "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=64&w=64",
+    "large": "https://images.unsplash.com/placeholder-avatars/extra-large.jpg?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&cs=tinysrgb&fit=crop&h=128&w=128"
+  },
+  "instagram_username": null,
+  "total_collections": 1,
+  "total_likes": 0,
+  "total_photos": 0,
+  "accepted_tos": false,
+  "followed_by_user": false,
+  "photos": [],
+  "badge": null,
+  "downloads": 0,
+  "tags": {
+    "custom": [],
+    "aggregated": []
+  },
+  "followers_count": 0,
+  "following_count": 0,
+  "allow_messages": true,
+  "numeric_id": 3379790,
+  "uid": "g8Gvi_mO9r8",
+  "confirmed": true,
+  "uploads_remaining": 10,
+  "unlimited_uploads": false,
+  "email": "d.sola.03@gmail.com"
+}

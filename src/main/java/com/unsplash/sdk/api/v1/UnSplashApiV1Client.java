@@ -67,48 +67,45 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
             Reader reader = new StringReader(response.body());
             return objectMapper.readValue(reader, TokenV1Credentials.class);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new InvalidResponseFormat("The system can't find the access token in the response");
         }
     }
 
-    public UserProfile getUserProfile() {
-        //TODO: Check the access token is not empty
-        HttpRequest request = buildHttpRequest("me");
-        HttpResponse<String> response = null;
-
+    @Override
+    public UserProfile getUserProfile(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+        HttpResponse<String> response;
         try {
+            HttpRequest request = buildHttpGetRequest("me", accessToken);
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException|InterruptedException e) {
-            // TODO: Return custom API error
+            System.out.println("Error when trying to get the user profile with accessToken [" + accessToken + "]");
             e.printStackTrace();
+            throw new UnSplashApiError(e.getMessage());
         }
-
+        validateResponse(response);
         return extractUserProfileFromResponse(response);
     }
 
-    private HttpRequest buildHttpRequest(String endpoint) {
+    private HttpRequest buildHttpGetRequest(String endpoint, String accessToken) {
         return HttpRequest.newBuilder()
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .header("Accept-Version", "1.0")
+                .header("Authorization", "Bearer " + accessToken)
                 .uri(URI.create(BASE_URI + "/" + endpoint))
                 .GET()
                 .build();
     }
 
     private UserProfile extractUserProfileFromResponse(HttpResponse<String> response) {
-        UserProfile userProfile = null;
-        // TODO: validate if the response contains errors message, then return error
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println("Response body -> " + response.body());
             Reader reader = new StringReader(response.body());
-            userProfile = objectMapper.readValue(reader, UserProfile.class);
+            return objectMapper.readValue(reader, UserProfile.class);
         } catch (NullPointerException| IOException e) {
-            // TODO: Return wrong response format error
             e.printStackTrace();
+            throw new InvalidResponseFormat("The system can't find valid information from the response");
         }
-
-        return userProfile;
     }
 
     private void validateResponse(HttpResponse<String> response) throws UnSplashApiError, InvalidJsonFormat
