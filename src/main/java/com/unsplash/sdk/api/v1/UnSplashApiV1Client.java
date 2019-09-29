@@ -55,9 +55,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
     public TokenCredentials generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials, UnSplashApiError {
         JSONObject jsonCredentials = userCredentials.toRequestAccessToken(authorizationCode);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .header("Accept-Version", "1.0")
+        HttpRequest request = getHttpRequestBuilder()
                 .uri(URI.create(OAUTH_URL + "/token"))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonCredentials.toJSONString()))
                 .build();
@@ -125,13 +123,18 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
     }
 
     private HttpRequest buildHttpGetRequest(String endpoint, String accessToken) {
-        return HttpRequest.newBuilder()
-                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                .header("Accept-Version", "1.0")
+        return getHttpRequestBuilder()
                 .header("Authorization", "Bearer " + accessToken)
                 .uri(URI.create(BASE_URI + "/" + endpoint))
                 .GET()
                 .build();
+    }
+
+
+    private HttpRequest.Builder getHttpRequestBuilder() {
+        return HttpRequest.newBuilder()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .header("Accept-Version", "1.0");
     }
 
     private UserProfileV1 extractUserProfileFromResponse(HttpResponse<String> response) {
@@ -182,6 +185,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private String buildErrorMessage(HttpResponse<String> response, JSONObject jsonResponse) {
         String errorMessage = "Error response from server -> " + response.statusCode();
         if (jsonResponse.containsKey("error")) {
