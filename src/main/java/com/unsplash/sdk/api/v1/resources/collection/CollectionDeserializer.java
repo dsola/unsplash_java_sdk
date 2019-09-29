@@ -1,4 +1,4 @@
-package com.unsplash.sdk.api.v1.resources;
+package com.unsplash.sdk.api.v1.resources.collection;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

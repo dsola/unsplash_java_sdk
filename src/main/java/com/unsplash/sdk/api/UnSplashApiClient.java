@@ -1,6 +1,7 @@
 package com.unsplash.sdk.api;
 
 import com.unsplash.sdk.entities.Collection;
+import com.unsplash.sdk.entities.Photo;
 import com.unsplash.sdk.entities.TokenCredentials;
 import com.unsplash.sdk.entities.UserProfile;
 import com.unsplash.sdk.errors.InvalidResponseFormat;
@@ -19,4 +20,6 @@ public interface UnSplashApiClient {
     UserProfile getUserProfile(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
 
     List<Collection> getCollections(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
+
+    List<Photo> getPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat;
 }

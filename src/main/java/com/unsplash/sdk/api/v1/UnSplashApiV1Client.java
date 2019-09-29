@@ -3,10 +3,12 @@ package com.unsplash.sdk.api.v1;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unsplash.sdk.api.UnSplashApiClient;
-import com.unsplash.sdk.api.v1.resources.CollectionV1;
+import com.unsplash.sdk.api.v1.resources.collection.CollectionV1;
 import com.unsplash.sdk.api.v1.resources.TokenV1Credentials;
+import com.unsplash.sdk.api.v1.resources.photo.PhotoV1;
 import com.unsplash.sdk.api.v1.resources.profile.UserProfileV1;
 import com.unsplash.sdk.entities.Collection;
+import com.unsplash.sdk.entities.Photo;
 import com.unsplash.sdk.entities.TokenCredentials;
 import com.unsplash.sdk.errors.InvalidResponseFormat;
 import com.unsplash.sdk.errors.UnSplashApiError;
@@ -98,12 +100,27 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
             HttpRequest request = buildHttpGetRequest("collections", accessToken);
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException|InterruptedException e) {
-            System.out.println("Error when trying to get the collections with accessToken [" + accessToken + "]");
+            System.out.println("Error when trying to get collections with accessToken [" + accessToken + "]");
             e.printStackTrace();
             throw new UnSplashApiError(e.getMessage());
         }
         validateResponse(response);
         return extractCollectionsFromResponse(response);
+    }
+
+    @Override
+    public List<Photo> getPhotos(String accessToken) throws UnSplashApiError, InvalidJsonFormat, InvalidResponseFormat {
+        HttpResponse<String> response;
+        try {
+            HttpRequest request = buildHttpGetRequest("photos", accessToken);
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException|InterruptedException e) {
+            System.out.println("Error when trying to get photos with accessToken [" + accessToken + "]");
+            e.printStackTrace();
+            throw new UnSplashApiError(e.getMessage());
+        }
+        validateResponse(response);
+        return extractPhotosFromResponse(response);
     }
 
     private HttpRequest buildHttpGetRequest(String endpoint, String accessToken) {
@@ -123,7 +140,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
             return objectMapper.readValue(reader, UserProfileV1.class);
         } catch (NullPointerException| IOException e) {
             e.printStackTrace();
-            throw new InvalidResponseFormat("The system can't find valid information from the response");
+            throw new InvalidResponseFormat("The system can't find a valid user profile from the response");
         }
     }
 
@@ -134,7 +151,18 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
             return objectMapper.readValue(reader, new TypeReference<List<CollectionV1>>(){});
         } catch (NullPointerException| IOException e) {
             e.printStackTrace();
-            throw new InvalidResponseFormat("The system can't find valid information from the response");
+            throw new InvalidResponseFormat("The system can't find any valid collection from the response");
+        }
+    }
+
+    private List<Photo> extractPhotosFromResponse(HttpResponse<String> response) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Reader reader = new StringReader(response.body());
+            return objectMapper.readValue(reader, new TypeReference<List<PhotoV1>>(){});
+        } catch (NullPointerException| IOException e) {
+            e.printStackTrace();
+            throw new InvalidResponseFormat("The system can't find any valid photos from the response");
         }
     }
 
@@ -146,21 +174,23 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
         JSONParser parser = new JSONParser();
         try {
             JSONObject jsonResponse = (JSONObject) parser.parse(response.body());
-            String errorMessage = "Error response from server -> " + response.statusCode();
-            if (jsonResponse.containsKey("error")) {
-                errorMessage += "[" + jsonResponse.get("error") + "] " + jsonResponse.get("error_description");
-                throw new UnSplashApiError(errorMessage);
-            }
-            if (jsonResponse.containsKey("errors")) {
-                List<String> errorMessageList = (List<String>) jsonResponse.get("errors");
-                String errorMessages = errorMessageList.stream().map(Object::toString).collect(Collectors.joining(","));;
-                errorMessage += errorMessages;
-
-            }
-            throw new UnSplashApiError(errorMessage);
+            throw new UnSplashApiError(buildErrorMessage(response, jsonResponse));
 
         } catch (ParseException e) {
             throw new InvalidJsonFormat("The response from the server has a bad format -> " + response.body());
         }
+    }
+
+    private String buildErrorMessage(HttpResponse<String> response, JSONObject jsonResponse) {
+        String errorMessage = "Error response from server -> " + response.statusCode();
+        if (jsonResponse.containsKey("error")) {
+            errorMessage += "[" + jsonResponse.get("error") + "] " + jsonResponse.get("error_description");
+        } else if (jsonResponse.containsKey("errors")) {
+            List<String> errorMessageList = (List<String>) jsonResponse.get("errors");
+            String errorMessages = errorMessageList.stream().map(Object::toString).collect(Collectors.joining(" && "));;
+            errorMessage += errorMessages;
+
+        }
+        return errorMessage;
     }
 }

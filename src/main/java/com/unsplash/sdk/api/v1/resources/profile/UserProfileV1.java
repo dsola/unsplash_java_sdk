@@ -92,19 +92,19 @@ public class UserProfileV1 implements com.unsplash.sdk.entities.UserProfile {
         return (Objects.isNull(profilePicture)) ? Optional.empty() : Optional.of(profilePicture.getLargePictureUrl());
     }
 
-    public void setBio(String bio) {
+    void setBio(String bio) {
         this.bio = bio;
     }
 
-    public void setLocation(String location) {
+    void setLocation(String location) {
         this.location = location;
     }
 
-    public void setMetrics(UserProfileMetrics metrics) {
+    void setMetrics(UserProfileMetrics metrics) {
         this.metrics = metrics;
     }
 
-    public void setProfilePicture(UserProfilePicture profilePicture) {
+    void setProfilePicture(UserProfilePicture profilePicture) {
         this.profilePicture = profilePicture;
     }
 }

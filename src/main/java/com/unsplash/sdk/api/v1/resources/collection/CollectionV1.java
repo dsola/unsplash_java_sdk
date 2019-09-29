@@ -1,6 +1,7 @@
-package com.unsplash.sdk.api.v1.resources;
+package com.unsplash.sdk.api.v1.resources.collection;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.unsplash.sdk.api.v1.resources.collection.CollectionDeserializer;
 import com.unsplash.sdk.entities.UserProfile;
 
 import java.time.LocalDateTime;
@@ -68,9 +69,7 @@ public class CollectionV1 implements com.unsplash.sdk.entities.Collection {
     }
 
     @Override
-    public UserProfile getUser() {
-        return user;
-    }
+    public UserProfile getUser() { return user; }
 
     public void setTitle(String title) {
         this.title = title;
