@@ -1,5 +1,6 @@
 package com.unsplash.sdk.api.v1;
 
+import com.unsplash.sdk.api.ApiClientTest;
 import com.unsplash.sdk.api.stubs.UserCredentialsStub;
 import com.unsplash.sdk.entities.Collection;
 import com.unsplash.sdk.entities.UserProfile;

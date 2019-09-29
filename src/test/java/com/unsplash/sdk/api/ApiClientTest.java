@@ -1,4 +1,4 @@
-package com.unsplash.sdk.api.v1;
+package com.unsplash.sdk.api;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -11,9 +11,9 @@ import java.net.http.HttpResponse;
 
 import static org.mockito.Mockito.mock;
 
-abstract class ApiClientTest {
-    HttpClient httpClient;
-    HttpResponse responseFromServer;
+public abstract class ApiClientTest {
+    protected HttpClient httpClient;
+    protected HttpResponse responseFromServer;
 
     @BeforeEach
     void setUp() {
@@ -21,7 +21,7 @@ abstract class ApiClientTest {
         this.responseFromServer = mock(HttpResponse.class);
     }
 
-    String loadServerMockResponse(String relativePath) throws IOException {
+    protected String loadServerMockResponse(String relativePath) throws IOException {
         URL url = getClass().getResource("/api_mock_responses/" + relativePath);
         return this.readFile(url.getFile());
     }

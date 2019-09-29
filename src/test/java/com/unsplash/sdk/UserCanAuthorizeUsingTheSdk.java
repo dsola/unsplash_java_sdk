@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-class UserCanAuthorizeUsingTheSdk {
+class UserCanAuthorizeUsingTheSdk extends SdkClientTest {
     @Test
     final void user_can_initialize_the_sdk_with_the_credentials() {
         UserCredentials userCredentials = UserCredentialsStub.makeForV1();
@@ -43,18 +43,7 @@ class UserCanAuthorizeUsingTheSdk {
         UnSplashSdkClient client = buildSdkClientWithApiClientStub(apiClient);
 
         TokenCredentials tokenCredentials = client.generateAccessToken("some-random-code");
-        
+
         assertEquals(apiClient.getTokenCredentials(), tokenCredentials);
-    }
-
-
-    private UnSplashSdkClient buildSdkClientWithApiClientStub(UnSplashApiClient apiClient) {
-        UserCredentials userCredentials = UserCredentialsStub.makeForV1();
-        String version = SupportedApiVersions.VERSION_1;
-        UnSplashApiClientFactory factory = Mockito.mock(UnSplashApiClientFactory.class);
-        Mockito
-            .when(factory.build(version, userCredentials))
-            .thenReturn(apiClient);
-        return new UnSplashSdkClient(factory, SupportedApiVersions.VERSION_1, userCredentials);
     }
 }

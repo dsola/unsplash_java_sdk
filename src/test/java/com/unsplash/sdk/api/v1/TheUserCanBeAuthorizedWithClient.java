@@ -1,5 +1,6 @@
 package com.unsplash.sdk.api.v1;
 
+import com.unsplash.sdk.api.ApiClientTest;
 import com.unsplash.sdk.api.SupportedApiVersions;
 import com.unsplash.sdk.api.UnSplashApiClientFactory;
 import com.unsplash.sdk.api.stubs.UserCredentialsStub;
