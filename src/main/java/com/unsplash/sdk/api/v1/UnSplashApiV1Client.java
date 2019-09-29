@@ -34,8 +34,8 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
     private static final String BASE_URI = "https://api.unsplash.com";
     private static final String OAUTH_URL = "https://unsplash.com/oauth";
 
-    private HttpClient client;
-    private UserV1Credentials userCredentials;
+    private final HttpClient client;
+    private final UserV1Credentials userCredentials;
 
     public UnSplashApiV1Client(HttpClient client, UserV1Credentials userCredentials) {
         this.client = client;
@@ -61,7 +61,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
                 .uri(URI.create(OAUTH_URL + "/token"))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonCredentials.toJSONString()))
                 .build();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException|InterruptedException e) {
@@ -188,7 +188,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
             errorMessage += "[" + jsonResponse.get("error") + "] " + jsonResponse.get("error_description");
         } else if (jsonResponse.containsKey("errors")) {
             List<String> errorMessageList = (List<String>) jsonResponse.get("errors");
-            String errorMessages = errorMessageList.stream().map(Object::toString).collect(Collectors.joining(" && "));;
+            String errorMessages = errorMessageList.stream().map(Object::toString).collect(Collectors.joining(" && "));
             errorMessage += errorMessages;
 
         }

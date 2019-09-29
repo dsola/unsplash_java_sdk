@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @JsonDeserialize(using = CollectionDeserializer.class)
 final public class CollectionV1 implements Collection {
-    private Integer id;
+    private final Integer id;
     private String title;
     private String description;
     private LocalDateTime publishedDate;

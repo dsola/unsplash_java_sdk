@@ -1,9 +1,9 @@
 package com.unsplash.sdk.api.v1.resources.profile;
 
 class UserProfileMetrics {
-    private Integer totalLikes;
-    private Integer totalPhotos;
-    private Integer totalCollections;
+    private final Integer totalLikes;
+    private final Integer totalPhotos;
+    private final Integer totalCollections;
 
     public UserProfileMetrics(Integer totalLikes, Integer totalPhotos, Integer totalCollections) {
         this.totalLikes = totalLikes;

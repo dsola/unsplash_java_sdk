@@ -101,8 +101,6 @@ final class TheUserIsAbleToRequestCollections extends ApiClientTest {
 
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
-        assertThrows(UnSplashApiError.class,  () -> {
-            client.getCollections(accessToken);
-        });
+        assertThrows(UnSplashApiError.class,  () -> client.getCollections(accessToken));
     }
 }

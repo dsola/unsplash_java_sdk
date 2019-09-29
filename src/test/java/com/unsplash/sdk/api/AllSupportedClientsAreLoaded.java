@@ -18,8 +18,6 @@ class AllSupportedClientsAreLoaded {
     @Test
     void the_system_notifies_the_user_when_the_version_is_not_supported() {
         UnSplashApiClientFactory factory = new UnSplashApiClientFactory();
-        assertThrows(UnsupportedApiVersion.class, () -> {
-            factory.build("2", UserCredentialsStub.makeForV1());
-        });
+        assertThrows(UnsupportedApiVersion.class, () -> factory.build("2", UserCredentialsStub.makeForV1()));
     }
 }

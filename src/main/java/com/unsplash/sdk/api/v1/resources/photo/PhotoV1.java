@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @JsonDeserialize(using = PhotoDeserializer.class)
 final public class PhotoV1 implements com.unsplash.sdk.entities.Photo {
-    private String id;
+    private final String id;
     private LocalDateTime publishedDate;
     private LocalDateTime updatedDate;
     private Integer width;

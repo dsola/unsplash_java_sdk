@@ -84,9 +84,7 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         UnSplashApiV1Client client = new UnSplashApiV1Client(httpClient, userV1Credentials);
 
-        UnSplashApiError error = assertThrows(UnSplashApiError.class, () -> {
-            client.generateAccessToken(authorizationCode);
-        });
+        UnSplashApiError error = assertThrows(UnSplashApiError.class, () -> client.generateAccessToken(authorizationCode));
 
         assertTrue(error.getMessage().contains("401"));
         assertTrue(error.getMessage().contains("invalid_grant"));
@@ -94,7 +92,7 @@ final class TheUserCanBeAuthorizedWithClient extends ApiClientTest {
     }
 
     @Test
-    final void the_grant_type_and_the_authorization_code_are_informed_at_the_response() throws IOException, InterruptedException {
+    final void the_grant_type_and_the_authorization_code_are_informed_at_the_response() throws IOException {
         UserV1Credentials userV1Credentials = UserCredentialsStub.makeForV1();
         String authorizationCode = "234567890";
 

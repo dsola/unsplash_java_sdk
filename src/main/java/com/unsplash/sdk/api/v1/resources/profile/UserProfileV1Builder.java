@@ -13,7 +13,7 @@ public class UserProfileV1Builder {
                 extractTextValueFromNode(productNode, "username"),
                 extractTextValueFromNode(productNode, "first_name"),
                 extractTextValueFromNode(productNode, "last_name"),
-                extractDateTimeFromNode(productNode, "updated_at")
+                extractDateTimeFromNode(productNode)
         );
 
         if (productNode.has("bio")) {
@@ -46,8 +46,8 @@ public class UserProfileV1Builder {
         return node.get(property).intValue();
     }
 
-    private static LocalDateTime extractDateTimeFromNode(JsonNode node, String property) {
-        return convertToLocalDateTime(extractTextValueFromNode(node, property));
+    private static LocalDateTime extractDateTimeFromNode(JsonNode node) {
+        return convertToLocalDateTime(extractTextValueFromNode(node, "updated_at"));
     }
 
     private static LocalDateTime convertToLocalDateTime(String dateTimeStr) {

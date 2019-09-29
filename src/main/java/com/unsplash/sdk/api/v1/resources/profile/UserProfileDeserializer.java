@@ -6,9 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class UserProfileDeserializer extends StdDeserializer<UserProfileV1> {
 
     public UserProfileDeserializer() {

@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @JsonDeserialize(using = UserProfileDeserializer.class)
 final public class UserProfileV1 implements com.unsplash.sdk.entities.UserProfile {
-    private String id;
-    private String username;
-    private String firstName;
-    private String lastName;
+    private final String id;
+    private final String username;
+    private final String firstName;
+    private final String lastName;
     private String bio;
     private String location;
-    private LocalDateTime updatedTime;
+    private final LocalDateTime updatedTime;
     private UserProfileMetrics metrics;
     private UserProfilePicture profilePicture;
 

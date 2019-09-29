@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="EntryPointsManager">
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getBio" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getFirstName" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getId" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getLargeProfilePicture" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getLastName" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getLocation" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getMediumProfilePicture" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getSmallProfilePicture" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getTotalCollections" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getTotalLikes" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getTotalPhotos" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" method="getUpdatedTime" />
+    <pattern value="com.unsplash.sdk.entities.UserProfile" />
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

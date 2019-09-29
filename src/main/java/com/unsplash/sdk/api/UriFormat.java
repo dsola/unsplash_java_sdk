@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.google.common.base.CaseFormat;
 
 public class UriFormat {
-    private StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     @JsonAnySetter
     public void addToUri(String name, Object property) {

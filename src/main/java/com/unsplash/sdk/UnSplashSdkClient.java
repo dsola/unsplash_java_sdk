@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class UnSplashSdkClient implements UnSplashClient {
 
-    private UnSplashApiClient apiClient;
+    private final UnSplashApiClient apiClient;
     private TokenCredentials tokenCredentials = null;
 
     UnSplashSdkClient(UnSplashApiClientFactory factory, String version, UserCredentials userCredentials) {
