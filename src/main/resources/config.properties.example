@@ -1,5 +1,0 @@
-unsplash.api.client_id=02ee28ed35a8ef3dedb190bc4cea00f799011ae2403455f5f03c743d1d62fc3d
-unsplash.api.client_secret=8587e2ea911c7380691f5590010e3409e5fb0a976e293d6cf07a18360cbd5cde
-unsplash.api.authorization_code=ad1b5a66c79d05d4591dcadf837354cd03168c31264f2e77e25ae8e0926871ae
-unsplash.api.redirect_uri=urn:ietf:wg:oauth:2.0:oob
-unsplash.api.version=1

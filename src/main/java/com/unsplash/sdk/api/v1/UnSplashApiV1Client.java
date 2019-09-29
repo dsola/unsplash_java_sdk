@@ -2,8 +2,9 @@ package com.unsplash.sdk.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unsplash.sdk.api.UnSplashApiClient;
-import com.unsplash.sdk.api.UserCredentials;
 import com.unsplash.sdk.api.v1.resources.UserProfile;
+import com.unsplash.sdk.exceptions.WrongJsonUserCredentials;
+
 import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.io.Reader;
@@ -12,22 +13,35 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
-public class UnSplashApiV1Client implements UnSplashApiClient {
+final public class UnSplashApiV1Client implements UnSplashApiClient {
 
     private static final String BASE_URI = "https://api.unsplash.com";
+    private static final String OAUTH_URL = "https://unsplash.com/oauth";
 
     private HttpClient client;
-    private UserCredentials userCredentials;
-    private String accessToken = null;
+    private UserV1Credentials userCredentials;
 
-    public UnSplashApiV1Client(HttpClient client, UserCredentials userCredentials) {
+    public UnSplashApiV1Client(HttpClient client, UserV1Credentials userCredentials) {
         this.client = client;
         this.userCredentials = userCredentials;
     }
 
-    public void authorize() {
+    public String getAuthorizationUrl(List<String> scopes) {
+        String uriScopes = scopes.toString();
+        return OAUTH_URL + "/authorize?" + userCredentials.toUriFormat().toString() + uriScopes;
+    }
 
+    public String generateAccessToken(String authorizationCode) throws WrongJsonUserCredentials {
+        String jsonCredentials = userCredentials.toJson();
+        HttpRequest request = HttpRequest.newBuilder()
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                .header("Accept-Version", "1.0")
+                .uri(URI.create(OAUTH_URL + "/token"))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonCredentials))
+                .build();
+        return "access_token";
     }
 
     public UserProfile getUserProfile() {
