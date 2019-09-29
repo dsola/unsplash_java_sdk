@@ -36,12 +36,22 @@ public class UserProfileDeserializer extends StdDeserializer<UserProfile> {
         if (productNode.has("location")) {
             userProfile.setLocation(extractTextValueFromNode(productNode, "location"));
         }
+        UserProfileMetrics metrics = new UserProfileMetrics(
+            extractIntegerValueFromNode(productNode, "total_likes"),
+            extractIntegerValueFromNode(productNode, "total_photos"),
+            extractIntegerValueFromNode(productNode, "total_collections")
+        );
+        userProfile.setMetrics(metrics);
 
         return userProfile;
     }
 
     private String extractTextValueFromNode(JsonNode node, String property) {
         return node.get(property).textValue();
+    }
+
+    private Integer extractIntegerValueFromNode(JsonNode node, String property) {
+        return node.get(property).intValue();
     }
 
     private LocalDateTime convertToLocalDateTime(String dateTimeStr) {

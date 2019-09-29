@@ -3,6 +3,8 @@ package com.unsplash.sdk.api.v1.resources;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
 
 @JsonDeserialize(using = UserProfileDeserializer.class)
 public class UserProfile {
@@ -12,14 +14,15 @@ public class UserProfile {
     private String lastName;
     private String bio;
     private String location;
-    private LocalDateTime dateTime;
+    private LocalDateTime updatedTime;
+    private UserProfileMetrics metrics;
 
-    public UserProfile(String id, String username, String firstName, String lastName, LocalDateTime dateTime) {
+    public UserProfile(String id, String username, String firstName, String lastName, LocalDateTime updatedTime) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dateTime = dateTime;
+        this.updatedTime = updatedTime;
     }
 
     public String getId() {
@@ -38,16 +41,28 @@ public class UserProfile {
         return lastName;
     }
 
-    public String getBio() {
-        return bio;
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
     }
 
-    public String getLocation() {
-        return location;
+    public Optional<String> getBio() {
+        return (Objects.isNull(bio)) ? Optional.empty() : Optional.of(bio);
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public Optional<String> getLocation() {
+        return (Objects.isNull(location)) ? Optional.empty() : Optional.of(location);
+    }
+
+    public Optional<Integer> getTotalCollections() {
+        return (Objects.isNull(metrics)) ? Optional.empty() : Optional.of(metrics.getTotalCollections());
+    }
+
+    public Optional<Integer> getTotalLikes() {
+        return (Objects.isNull(metrics)) ? Optional.empty() : Optional.of(metrics.getTotalLikes());
+    }
+
+    public Optional<Integer> getTotalPhotos() {
+        return (Objects.isNull(metrics)) ? Optional.empty() : Optional.of(metrics.getTotalPhotos());
     }
 
     public void setBio(String bio) {
@@ -56,5 +71,9 @@ public class UserProfile {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setMetrics(UserProfileMetrics metrics) {
+        this.metrics = metrics;
     }
 }

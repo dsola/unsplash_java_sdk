@@ -7,8 +7,8 @@
   "last_name": "Sola",
   "twitter_username": null,
   "portfolio_url": null,
-  "bio": null,
-  "location": null,
+  "bio": "An amazing Software Engineer :)",
+  "location": "Van Nijenrodeweg 214, Amsterdam",
   "links": {
     "self": "https://api.unsplash.com/users/solaing",
     "html": "https://unsplash.com/@solaing",
