@@ -63,6 +63,8 @@ List<Collection> collections = client.getCollections();
 Do you have some troubles trying to connect to Unsplash? Don't worry, I made some tests ready to try all the functions for you :)
 
 You can find it in `com.unsplash.sdk.FollowingTheReadmeInstructions`. You just need to remove the `@Disabled` flag, update the credentials and play around!
+
+**Important note**: this tests are implemented to be executed with `Junit 5`.
 ## Status
 - This is the first version and has been done to show up my coding skills to an organization.
 - This SDK allows you to authorize to the API, read the user profile, read photos and read collections.
