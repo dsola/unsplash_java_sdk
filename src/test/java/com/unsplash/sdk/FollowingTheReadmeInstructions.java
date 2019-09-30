@@ -13,10 +13,10 @@ import java.util.List;
 @Disabled
 class FollowingTheReadmeInstructions {
 
-    private final String clientId = "02ee28ed35a8ef3dedb190bc4cea00f799011ae2403455f5f03c743d1d62fc3d";
-    private final String clientSecret = "8587e2ea911c7380691f5590010e3409e5fb0a976e293d6cf07a18360cbd5cde";
-    private final String redirectUri = "urn:ietf:wg:oauth:2.0:oob";
-    private final String authorizationCode = "5a264a201536d6c4c67757818df698f2cbf8cdb7a7eb7fb85c1c9064aaee3d97";
+    private final String clientId = "<YOUR-CLIENT-ID>";
+    private final String clientSecret = "<YOUR-CLIENT-SECRET>";
+    private final String redirectUri = "<YOUR-REDIRECT-URI>";
+    private final String authorizationCode = "<YOUR-AUTHORIZATION-CODE>";
 
     @Test
     final void following_the_readme_the_user_can_generate_the_authorization_url() {
