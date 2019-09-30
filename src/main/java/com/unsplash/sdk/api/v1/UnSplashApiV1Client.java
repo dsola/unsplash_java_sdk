@@ -187,7 +187,7 @@ final public class UnSplashApiV1Client implements UnSplashApiClient {
 
     @SuppressWarnings("unchecked")
     private String buildErrorMessage(HttpResponse<String> response, JSONObject jsonResponse) {
-        String errorMessage = "Error response from server -> " + response.statusCode();
+        String errorMessage = "Error response from server " + response.statusCode() + " -> ";
         if (jsonResponse.containsKey("error")) {
             errorMessage += "[" + jsonResponse.get("error") + "] " + jsonResponse.get("error_description");
         } else if (jsonResponse.containsKey("errors")) {

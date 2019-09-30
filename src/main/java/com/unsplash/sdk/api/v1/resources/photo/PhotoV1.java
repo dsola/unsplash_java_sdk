@@ -2,12 +2,14 @@ package com.unsplash.sdk.api.v1.resources.photo;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.unsplash.sdk.entities.UserProfile;
+import lombok.ToString;
 
 import java.awt.*;
 import java.net.URL;
 import java.time.LocalDateTime;
 
 @JsonDeserialize(using = PhotoDeserializer.class)
+@ToString
 final public class PhotoV1 implements com.unsplash.sdk.entities.Photo {
     private final String id;
     private LocalDateTime publishedDate;

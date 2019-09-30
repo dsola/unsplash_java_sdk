@@ -3,10 +3,12 @@ package com.unsplash.sdk.api.v1.resources.collection;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.unsplash.sdk.entities.Collection;
 import com.unsplash.sdk.entities.UserProfile;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @JsonDeserialize(using = CollectionDeserializer.class)
+@ToString
 final public class CollectionV1 implements Collection {
     private final Integer id;
     private String title;

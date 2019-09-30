@@ -1,6 +1,7 @@
 package com.unsplash.sdk.api.v1.resources.profile;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.ToString;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @JsonDeserialize(using = UserProfileDeserializer.class)
+@ToString
 final public class UserProfileV1 implements com.unsplash.sdk.entities.UserProfile {
     private final String id;
     private final String username;
